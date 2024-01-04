@@ -1,14 +1,27 @@
+"use client"
 import { notFound } from "next/navigation"
 
-export default function ReviewDetail (
-    {params}:{
+type TParams = {
     params:{
         productId:string,
         reviewId:string
     }
     }
+
+
+function getRandomInt(count: number) {
+    return Math.floor(Math.random() * count);
+}
+
+export default function ReviewDetail (
+    {params}:TParams
 ){
 
+    const random = getRandomInt(2)
+
+    if (random===1){
+        throw new Error("Something went wrong")
+    }
     if (parseInt(params.reviewId) > 10){
         notFound()
     }
