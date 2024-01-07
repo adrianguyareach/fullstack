@@ -7,7 +7,7 @@ export default function Home() {
     <>
       
       <br/>
-      <Link href="/dashboard">Dashboard</Link> <br />
+      <Link href="/complex-dashboard">Dashboard</Link> <br />
       <Link href="/blog">Blog</Link> <br />
       <Link href="/products">Products</Link>
 
