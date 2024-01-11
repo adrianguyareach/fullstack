@@ -22,25 +22,36 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header
-          style={{
-            backgroundColor: 'lightblue',
-            padding: "1rem"
-          }}
-        >
-          <Link href="/">
-            <p>Header</p>
-          </Link>
-        </header>  
+      <div>
+        <div>
+          <nav>
+            <div>
+              <h1>
+                <a href="/">Food Ninja</a>
+              </h1>
+            </div>
+            <ul>
+              <li>
+                <a href="#">
+                  <span>Home</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span>About</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span>Contact</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      
         {children}
-      <footer>
-        <p
-          style={{
-            backgroundColor: 'lightblue',
-            padding: "1rem"
-          }}
-        >Footer</p>
-      </footer>
+      </div>
       </body>
     </html>
   )
