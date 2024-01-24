@@ -1,0 +1,62 @@
+v 0.22.0
+
+list all cases
+create case
+edit case metadata
+delete case
+search case
+create a case's activity
+edit case's activity
+delete case's activity
+view a case's activity
+see case history
+preview case's images in a card
+view all case's images
+preview a case's image
+remove a case's image
+remove multiple files in a case 
+preview a case's files in a card
+view all files in a case
+preview a case's files in a card
+remove a case's files 
+remove multiple files in case
+comment in an case
+view case comments
+
+WFAHR
+
+add goal comment
+mention an employee in a goal comment
+delete goal comment
+view all goal comments
+edit goal comment
+
+support services application
+
+sign in via email
+ziew zero travel requests
+list travel requests
+add a travel request
+edit travel request
+view travel request
+
+preview travel request as pdf
+approve travel request
+decline travel request
+
+add expense report record
+edit expense report record
+delete expense report record
+view empty expense report
+approve expense report as a finance manager
+
+comment on travel request
+view comments on travel request
+delete comments on travel request
+edit comments on travel request
+
+add a budget record
+edit a budget record
+delete a budget record
+list budget records
+
