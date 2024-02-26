@@ -6,8 +6,10 @@ export default function Home() {
   return (
     <div className="px-16 py-16 bg-gray-100 md:col-span-2">
       <div className=" flex justify-center md:justify-end ">
-        <a href="#" className="btn text-primary border-primary md:border-2 hover:bg-primary hover:text-white">Log in</a>
-        <a href="#" className="btn text-primary ml-2 border-primary md:border-2 hover:bg-primary hover:text-white">Sign up</a>
+        <a href="#" className="btn text-primary border-primary md:border-2
+         hover:bg-primary hover:text-white transition ease-out duration-500 ">Log in</a>
+        <a href="#" className="btn text-primary ml-2 border-primary md:border-2 
+        hover:bg-primary hover:text-white transition ease-out duration-500">Sign up</a>
       </div>
 
       <header>
@@ -84,7 +86,8 @@ export default function Home() {
       </div>
 
       <div className=" flex justify-center ">
-        <div className=" btn bg-secondary-100 text-secondary-200 hover:shadow-inner cursor-pointer">Load more</div>
+        <div className=" btn bg-secondary-100 text-secondary-200 hover:shadow-inner 
+          cursor-pointer transition hover:scale-125 hover:bg-opacity-50 ease-out duration-300">Load more</div>
       </div>
     </div>    
     )

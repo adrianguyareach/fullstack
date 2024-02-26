@@ -1,3 +1,4 @@
+import { before } from "node:test"
 import React from "react"
 
 export default function DashboardLayout({
@@ -15,7 +16,7 @@ export default function DashboardLayout({
 
   }) {
 
-    const isLoggedIn = false
+    const isLoggedIn = true
     return isLoggedIn ?(
       <div>
         <div>{children}</div>

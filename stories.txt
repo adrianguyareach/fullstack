@@ -31,6 +31,28 @@ delete goal comment
 view all goal comments
 edit goal comment
 
+v1.0
+list leave categories
+create a leave category
+edit a leave category
+view leave category details
+delete leave category
+
+list leave applications
+filter leave applications by date range 
+apply for leave
+edit a leave application
+cancel a leave application
+approve a leave application 
+decline a leave a leave application
+
+v2
+
+Dashboard
+
+
+
+
 support services application
 
 sign in via email
@@ -59,4 +81,3 @@ add a budget record
 edit a budget record
 delete a budget record
 list budget records
-

@@ -1,8 +1,8 @@
+
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Link from 'next/link'
-
+import { useState } from 'react';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -19,39 +19,46 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
     <html lang="en">
       <body  className="text-gray-600 font-body font-nunito">
       <div className='grid md:grid-cols-3'>
-        <div className=" md:col-span-1">
-          <nav>
-            <div>
+        <div className=" md:col-span-1 md:flex md:justify-end">
+          <nav className="text-right">
+            <div className=" flex justify-between items-center ">
               <h1 className=' font-bold uppercase p-4 border-b border-gray-200'>
                 <a href="/" className=" text-green-500">Food Ninja</a>
               </h1>
+              <div className="px-4 cursor-pointer md:hidden" id='burger'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+
+              </div>
             </div>
-            <ul>
-              <li className="text-gray-700 font-bold">
-                <a href="#">
+            <ul className="text-sm mt-6 hidden md:block" id='menu'>
+              <li className="text-gray-700 font-bold py-1">
+                <a href="#" className="flex px-4 justify-end border-r-4 border-primary">
                   <span>Home</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 ml-2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                   </svg>
                 </a>
               </li>
-              <li>
-                <a href="#">
+              <li className="py-1">
+                <a href="#" className="flex px-4 justify-end border-r-4 border-white">
                   <span>About</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 ml-2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                   </svg>
 
                 </a>
               </li>
-              <li>
-                <a href="#">
+              <li className="py-1">
+                <a href="#" className="flex px-4 justify-end border-r-4 border-white">
                   <span>Contact</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 ml-2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                   </svg>
 
