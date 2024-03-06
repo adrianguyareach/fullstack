@@ -2,8 +2,15 @@
 - name: Install Caddy
   hosts: all
   become: true
-  tasks:
+  pre_tasks:
+    - name: Check if Caddy is installed
+      tags: always
+      command: dpkg -l caddy
+      register: caddy_installed
+      ignore_errors: true
+
     - name: Install required packages
+      tags: always
       apt:
         name: "{{ item }}"
         state: present
@@ -14,18 +21,24 @@
         - curl
 
     - name: Add Caddy GPG key
+      tags: always
       shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+      when: caddy_installed.rc != 0
 
     - name: Add Caddy repository
+      tags: always
       shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+      when: caddy_installed.rc != 0
 
     - name: Update apt cache
+      tags: always
       apt:
         update_cache: yes
 
     - name: Install Caddy
+      tags: install
       apt:
         name: caddy
         state: present
-
-# ansible-playbook --ask-become-pass install_caddy.yml
+      when: 
+        - caddy_installed.rc != 0
