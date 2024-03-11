@@ -2,15 +2,15 @@
 - name: Install Caddy
   hosts: all
   become: true
-  pre_tasks:
+  tasks:
     - name: Check if Caddy is installed
-      tags: always
+      tags: caddy-install
       command: dpkg -l caddy
       register: caddy_installed
       ignore_errors: true
 
     - name: Install required packages
-      tags: always
+      tags: caddy-install
       apt:
         name: "{{ item }}"
         state: present
@@ -21,17 +21,17 @@
         - curl
 
     - name: Add Caddy GPG key
-      tags: always
+      tags: caddy-install
       shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
       when: caddy_installed.rc != 0
 
     - name: Add Caddy repository
-      tags: always
+      tags: caddy-install
       shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
       when: caddy_installed.rc != 0
 
     - name: Update apt cache
-      tags: always
+      tags: caddy-install
       apt:
         update_cache: yes
 
@@ -42,3 +42,34 @@
         state: present
       when: 
         - caddy_installed.rc != 0
+
+- name: Add user to docker group if not already a member and reboot
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check if user is already in docker group
+      tags: 
+        - pre-docker
+      ansible.builtin.shell:
+        cmd: "getent group | grep docker | grep -w {{ ansible_user }}"
+      register: check_docker_membership
+      ignore_errors: true
+
+    - name: Add user to docker group
+      tags: 
+        - pre-docker
+      ansible.builtin.shell:
+        cmd: "usermod -aG docker {{ ansible_user }}"
+      when: check_docker_membership.rc != 0
+
+    - name: Reboot the system
+      tags: 
+        - pre-docker
+      ansible.builtin.shell:
+        cmd: "reboot"
+      # when: check_docker_membership.rc != 0
+        # The 'reboot' command will disconnect the SSH connection,
+        # so this playbook will not continue running after this task
+      async: 0
+      poll: 0
+
