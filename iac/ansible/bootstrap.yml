@@ -1,5 +1,30 @@
 ---
-- name: Install Caddy
+- name: Add user to virtual machine
+  hosts: all
+  become: yes
+  tasks:
+    - name: create automator user
+      tags: always
+      user: 
+        name: automator
+        groups: root
+
+    - name: Add SSH key to automator user
+      tags: always
+      authorized_key:
+        user: automator
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILUXgG6bi4Qk3IYQI1eDcOrOzGWwZUwMwshdsXwRtHA0 ansible"
+
+    - name: add sudoers file for "automator"
+      tags: always
+      copy: 
+        src: sudoer_automator
+        dest: /etc/sudoers.d/automator
+        owner: root
+        group: root
+        mode: 0440
+
+- name: Install Caddy to virtual machines
   hosts: all
   become: true
   tasks:
@@ -19,6 +44,7 @@
         - debian-archive-keyring
         - apt-transport-https
         - curl
+      changed_when: false
 
     - name: Add Caddy GPG key
       tags: caddy-install
@@ -67,9 +93,9 @@
         - pre-docker
       ansible.builtin.shell:
         cmd: "reboot"
-      # when: check_docker_membership.rc != 0
-        # The 'reboot' command will disconnect the SSH connection,
-        # so this playbook will not continue running after this task
+      when: check_docker_membership.rc != 0
+        The 'reboot' command will disconnect the SSH connection,
+        so this playbook will not continue running after this task
       async: 0
       poll: 0
 
