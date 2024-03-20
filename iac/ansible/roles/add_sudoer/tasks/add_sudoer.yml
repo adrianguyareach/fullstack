@@ -1,0 +1,8 @@
+- name: add sudoers file for "automator"
+  tags: always
+  copy: 
+    src: sudoer_automator
+    dest: /etc/sudoers.d/automator
+    owner: root
+    group: root
+    mode: 0440

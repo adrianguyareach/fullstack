@@ -1,5 +1,5 @@
 - name: Add SSH key to automator user
-      tags: always
-      authorized_key:
-        user: automator
-        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILUXgG6bi4Qk3IYQI1eDcOrOzGWwZUwMwshdsXwRtHA0 ansible"
+  tags: always
+  authorized_key:
+    user: automator
+    key: "{{ ssh_key_path }}

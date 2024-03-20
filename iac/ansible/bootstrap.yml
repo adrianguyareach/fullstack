@@ -1,101 +1,12 @@
 ---
-- name: Add user to virtual machine
-  hosts: all
-  become: yes
-  tasks:
-    - name: create automator user
-      tags: always
-      user: 
-        name: automator
-        groups: root
-
-    - name: Add SSH key to automator user
-      tags: always
-      authorized_key:
-        user: automator
-        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILUXgG6bi4Qk3IYQI1eDcOrOzGWwZUwMwshdsXwRtHA0 ansible"
-
-    - name: add sudoers file for "automator"
-      tags: always
-      copy: 
-        src: sudoer_automator
-        dest: /etc/sudoers.d/automator
-        owner: root
-        group: root
-        mode: 0440
-
-- name: Install Caddy to virtual machines
-  hosts: all
-  become: true
-  tasks:
-    - name: Check if Caddy is installed
-      tags: caddy-install
-      command: dpkg -l caddy
-      register: caddy_installed
-      ignore_errors: true
-
-    - name: Install required packages
-      tags: caddy-install
-      apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - debian-keyring
-        - debian-archive-keyring
-        - apt-transport-https
-        - curl
-      changed_when: false
-
-    - name: Add Caddy GPG key
-      tags: caddy-install
-      shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
-      when: caddy_installed.rc != 0
-
-    - name: Add Caddy repository
-      tags: caddy-install
-      shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
-      when: caddy_installed.rc != 0
-
-    - name: Update apt cache
-      tags: caddy-install
-      apt:
-        update_cache: yes
-
-    - name: Install Caddy
-      tags: install
-      apt:
-        name: caddy
-        state: present
-      when: 
-        - caddy_installed.rc != 0
-
 - name: Add user to docker group if not already a member and reboot
   hosts: all
   become: yes
-  tasks:
-    - name: Check if user is already in docker group
-      tags: 
-        - pre-docker
-      ansible.builtin.shell:
-        cmd: "getent group | grep docker | grep -w {{ ansible_user }}"
-      register: check_docker_membership
-      ignore_errors: true
-
-    - name: Add user to docker group
-      tags: 
-        - pre-docker
-      ansible.builtin.shell:
-        cmd: "usermod -aG docker {{ ansible_user }}"
-      when: check_docker_membership.rc != 0
-
-    - name: Reboot the system
-      tags: 
-        - pre-docker
-      ansible.builtin.shell:
-        cmd: "reboot"
-      when: check_docker_membership.rc != 0
-        The 'reboot' command will disconnect the SSH connection,
-        so this playbook will not continue running after this task
-      async: 0
-      poll: 0
-
+  roles:
+    - add_user_to_docker_group
+  
+- name: Install Caddy
+  hosts: all
+  become: yes
+  roles:
+    - install_caddy
