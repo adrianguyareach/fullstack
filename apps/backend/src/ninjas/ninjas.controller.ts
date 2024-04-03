@@ -1,30 +1,38 @@
-import { Controller, Get, Param, Query, Post, Body, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Post,
+  Body,
+  Put,
+  NotFoundException,
+  ParseIntPipe,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CreateNinjaDto } from './dto/create-ninja.dto';
 import { UpdateNinjaDto } from './dto/update-ninja.dto';
-
-type Ninja = {
-  name: string;
-  age: number;
-  id: string;
-};
+import { NinjasService } from './ninjas.service';
 
 @Controller('ninjas')
 export class NinjasController {
+  constructor(private readonly ninjasService: NinjasService) {}
+
   @Get()
-  getNinjas(@Query('type') type: string): string[] {
-    return [type];
+  getNinjas(@Query('weapon') weapon: 'nunchuks' | 'stars'): any[] {
+    return this.ninjasService.getNinjas(weapon);
   }
   @Get(':id')
-  getOneNinja(@Param('id') id: string): Ninja {
-    return {
-      name: 'Adrian',
-      age: 25,
-      id: id,
-    };
+  getOneNinja(@Param('id', ParseIntPipe) id: number): CreateNinjaDto {
+    const ninja = this.ninjasService.getOneNinja(id);
+    if (!ninja) {
+      throw new NotFoundException();
+    }
+    return ninja;
   }
 
   @Post()
-  CreateNinja(@Body() CreateNinjaDto: CreateNinjaDto) {
+  CreateNinja(@Body(new ValidationPipe()) CreateNinjaDto: CreateNinjaDto) {
     return {
       name: CreateNinjaDto.name,
     };
