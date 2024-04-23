@@ -6,3 +6,11 @@ terraform.**
 .terraform.**
 **.tfvars
 **dist**
+
+pycache.pyc
+__pycache__/
+
+.env
+.env.*
+.venv/
+.envrc
