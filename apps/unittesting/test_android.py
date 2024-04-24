@@ -1,4 +1,5 @@
 import unittest
+from unittest import TestSuite
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
@@ -9,6 +10,10 @@ from unittest_prettify.colorize import (
     colorize,
     GREEN,
 )
+
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 
 capabilities = dict(
@@ -31,9 +36,22 @@ class CreateOrganisation(unittest.TestCase):
     def tearDown(self) -> None:
         if self.driver:
             self.driver.quit()
+    
+    
+    def test_create_org_flow(self) -> None:
 
-    def test_register_page(self) -> None:
-        "should navigate to create or join organisation page"
+        "Test create organisation flow"
+
+        with self.subTest():
+            logging.info("\nRunning test for navigating to the sign up page")
+            self.register_page()
+        with self.subTest():
+            logging.info("Running test for navigating to the create organisation page")
+            self.create_organisation_page()
+
+
+    def register_page(self) -> None:
+        "Should navigate to the sign up page"
         
         self.wait.until(EC.presence_of_element_located((AppiumBy.CLASS_NAME, "android.widget.ScrollView")))
 
@@ -51,11 +69,20 @@ class CreateOrganisation(unittest.TestCase):
         self.assertEqual("Login", login_text.text)
         self.assertEqual("Sign Up", signup_text.text)
 
-    def test_create_organisation_page(self) -> None:
+    def create_organisation_page(self) -> None:
+        "should navigate to create or join organisation page"
 
         signup_button  = self.driver.find_element(by=AppiumBy.XPATH, value='//android.widget.ScrollView/android.view.View[4]')
         signup_button.click()
 
+# def create_organisation_suite() -> TestSuite:
+#     suite = unittest.TestSuite()
+#     suite.addTest(CreateOrganisation('test_register_page'))
+#     suite.addTest(CreateOrganisation('test_create_organisation_page'))
+#     return suite
+    
         
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+    # runner = unittest.TextTestRunner(verbosity=2)
+    # runner.run(create_organisation_suite())
